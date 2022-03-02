@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-
+    <h1>Liste des contacts :</h1>
+    <ul th:each=" contact : ${contacts}">
+        <li th:text="${e.id}+' '+${e.lastname}+' '+${e.firstname}" onclick="redirect:contact/{e.id}" />
+    </ul>
 </body>
 </html>
