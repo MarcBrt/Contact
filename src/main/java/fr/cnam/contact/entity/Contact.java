@@ -1,10 +1,8 @@
 package fr.cnam.contact.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Contact {
@@ -15,7 +13,11 @@ public class Contact {
 
     private String lastName;
     private String firstName;
+
+    @OneToMany
     private List<Mail> mailList = new ArrayList<Mail>();
+
+    @ManyToMany
     private List<Adress> adressList = new ArrayList<Adress>();
 
     public Long getId() {
@@ -46,15 +48,39 @@ public class Contact {
         return mailList;
     }
 
-    public void setMailList(List<Mail> mailList) {
-        this.mailList = mailList;
+    public Contact addMail(Mail mail) throws Exception {
+        if (!this.mailList.contains(mail)) {
+            this.mailList.add(mail);
+            return this;
+        }
+        throw new Exception("Mail already exist");
+    }
+
+    public Contact removeMail(Mail mail) throws Exception {
+        if (this.mailList.contains(mail)) {
+            this.mailList.remove(mail);
+            return this;
+        }
+        throw new Exception("Mail does not exist");
     }
 
     public List<Adress> getAdressList() {
         return adressList;
     }
 
-    public void setAdressList(List<Adress> adressList) {
-        this.adressList = adressList;
+    public Contact addAdress(Adress adress) throws Exception {
+        if (!this.adressList.contains(adress)) {
+            this.adressList.add(adress);
+            return this;
+        }
+        throw new Exception("Adress already exist");
+    }
+
+    public Contact removeAdress(Adress adress) throws Exception {
+        if (this.adressList.contains(adress)) {
+            this.adressList.remove(adress);
+            return this;
+        }
+        throw new Exception("Adress does not exist");
     }
 }
