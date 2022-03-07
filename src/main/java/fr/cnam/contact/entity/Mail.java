@@ -12,6 +12,19 @@ public class Mail {
     @ManyToOne
     private Contact owner;
 
+    public Mail(Long id, String adress, Contact owner) {
+        this.id = id;
+        this.adress = adress;
+        this.owner = owner;
+    }
+
+    public Mail(String adress, Contact owner) {
+        this.adress = adress;
+        this.owner = owner;
+    }
+
+    public Mail() {}
+
     public Long getId() {
         return id;
     }
