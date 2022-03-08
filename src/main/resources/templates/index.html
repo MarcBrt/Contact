@@ -7,7 +7,14 @@
 <body>
     <h1>Liste des contacts :</h1>
     <ul th:each=" e : ${contacts}">
-        <li th:text="${e.id}+' '+${e.lastName}+' '+${e.firstName}"> <a href="/viewcontact"> Modifier </a></li>
+        <li> <p th:text="${e.id}+' '+${e.lastName}+' '+${e.firstName}"  />
+            <a th:onclick="|modifyContact('${e.id}')|">Modifier</a> <a th:onclick="|deleteContact('${e.id}')|">Supprimer</a>
+        </li>
     </ul>
 </body>
+<script type="text/javascript">
+            function modifyContact(id) {
+                window.location.href = `/viewcontact/${id}`
+            }
+</script>
 </html>
