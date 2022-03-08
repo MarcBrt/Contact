@@ -6,8 +6,8 @@
 </head>
 <body>
     <h1>Liste des contacts :</h1>
-    <ul th:each=" contact : ${contacts}">
-        <li th:text="${e.id}+' '+${e.lastname}+' '+${e.firstname}" onclick="redirect:contact/{e.id}" />
+    <ul th:each=" e : ${contacts}">
+        <li th:text="${e.id}+' '+${e.lastName}+' '+${e.firstName}"> <a href="/viewcontact"> Modifier </a></li>
     </ul>
 </body>
 </html>
