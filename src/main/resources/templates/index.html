@@ -2,20 +2,25 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Getting Started: Handling Form Submission</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-    <h1>Liste des contacts :</h1>
-    <ul th:each=" e : ${contacts}">
-        <li>
-            <p th:text="${e.id}+' '+${e.lastName}+' '+${e.firstName}" />
-            <a th:onclick="|modifyContact('${e.id}')|">Modifier</a> <a th:onclick="|deleteContact('${e.id}')|">Supprimer</a>
-        </li>
-    </ul>
+<h1>Liste des contacts :</h1>
+<ul th:each=" e : ${contacts}">
+    <li>
+        <p th:text="${e.id}+' '+${e.lastName}+' '+${e.firstName}"/>
+        <a th:onclick="|modifyContact('${e.id}')|">Modifier</a>
+        <a th:onclick="|deleteContact('${e.id}')|">Supprimer</a>
+    </li>
+</ul>
 </body>
 <script type="text/javascript">
-            function modifyContact(id) {
-                window.location.href = `/viewcontact/${id}`
-            }
+    function modifyContact(id) {
+        window.location.href = `/viewcontact/${id}`
+    }
+
+    function deleteContact(id) {
+        window.location.href = `/viewcontact/${id}/delete`
+    }
 </script>
 </html>

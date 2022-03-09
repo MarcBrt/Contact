@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ViewController {
@@ -64,6 +65,13 @@ public class ViewController {
         }
 
         repository.save(contact);
+        return "redirect:/";
+    }
+
+    @GetMapping("/viewcontact/{id}/delete")
+    public String getDelContact(@PathVariable long id, Model model) {
+        Optional<Contact> c1 = repository.findById(id);
+        c1.ifPresent(contact -> repository.delete(contact));
         return "redirect:/";
     }
 
