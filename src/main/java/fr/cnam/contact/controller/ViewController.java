@@ -22,16 +22,14 @@ public class ViewController {
     private ContactRepository repository;
 
     @GetMapping("/")
-    public String greeting(Model model) {
+    public String index(Model model) {
 
-        Contact c1 = new Contact(); c1.setId(0L); c1.setLastName("Brt"); c1.setFirstName("Mrc");
         Contact c2 = new Contact(); c2.setId(1L); c2.setLastName("Brt"); c2.setFirstName("Mrc");
         Contact c3 = new Contact(); c3.setId(2L); c3.setLastName("Brt"); c3.setFirstName("Mrc");
-        repository.save(c1);
         repository.save(c2);
         repository.save(c3);
 
-
+        System.out.println(repository.count());
 
         model.addAttribute("contacts", repository.findAll());
         return "index";
@@ -45,7 +43,7 @@ public class ViewController {
     }
 
     @PostMapping("/viewcontact/{id}")
-    public String greetingSubmit(@PathVariable long id, @ModelAttribute Contact contact, Model model) {
+    public String contactSave(@PathVariable long id, @ModelAttribute Contact contact, Model model) {
         model.addAttribute("contact", contact);
         System.out.println(contact.toString());
         repository.save(contact);

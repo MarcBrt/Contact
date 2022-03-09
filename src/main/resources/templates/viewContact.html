@@ -3,21 +3,31 @@
 <head>
     <title>Getting Started: Handling Form Submission</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css">
+
+    <!-- You should properly set the path from the main file. -->
 </head>
 <body>
+
+    <div class="row">
+        <div class="col m12 "><a href="/">Home</a></div>
+    </div>
 
     <h1 th:text="'Contact : '+${contact.lastName} +' '+ ${contact.firstName}" />
 
     <form action="#" th:action="@{'/viewcontact/'+${contact.id}}" th:object="${contact}" method="post">
-        <input type="hidden" th:field="*{id}" th:value="*{id}"/>
-        <p>Nom: <input type="text" th:field="*{lastName}" th:value="*{lastName}" /></p>
-        <p>Prénom: <input type="text" th:field="*{firstName}" th:value="*{firstName}" /></p>
-        <h3>Adresse Postale:</h3>
-        <ul id="listPostal" name="0">
+        <fieldset>
+            <input type="hidden" th:field="*{id}" th:value="*{id}"/>
+            <p>Nom: <input type="text" th:field="*{lastName}" th:value="*{lastName}" /></p>
+            <p>Prénom: <input type="text" th:field="*{firstName}" th:value="*{firstName}" /></p>
+            <h3>Adresse Postale:</h3>
+            <ul id="listPostal" name="0">
 
-            <button type="button" id="buttonAddPostal" th:onclick="|addPostalCase()|">Ajouter une adresse</button>
-        </ul>
-        <p><input type="submit" value="Save" /> <input type="reset" value="Reset" /></p>
+                <button type="button" id="buttonAddPostal" th:onclick="|addPostalCase()|">Ajouter une adresse</button>
+            </ul>
+            <p><input type="submit" value="Save" /> <input type="reset" value="Reset" /></p>
+        </fieldset>
     </form>
 </body>
 <script type="text/javascript">
