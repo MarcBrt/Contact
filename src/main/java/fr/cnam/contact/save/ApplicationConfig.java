@@ -28,7 +28,7 @@ public class ApplicationConfig {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
         File dbfile = new File(".");
-        dataSourceBuilder.url("jdbc:h2:file:" + dbfile.getAbsolutePath() + "\\dataBase.db");
+        dataSourceBuilder.url("jdbc:h2:file:" + dbfile.getAbsolutePath() + "\\src\\main\\resources\\db\\dataBase");
         return dataSourceBuilder.build();
     }
 
