@@ -1,11 +1,12 @@
 package fr.cnam.contact.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Contact {
+public class Contact implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -27,6 +28,17 @@ public class Contact {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", mailList=" + mailList +
+                ", adressList=" + adressList +
+                '}';
     }
 
     public Long getId() {

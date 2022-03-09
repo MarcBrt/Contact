@@ -5,17 +5,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+
     <h1 th:text="'Contact : '+${contact.lastName} +' '+ ${contact.firstName}" />
 
-    <form action="" onsubmit="null" th:object="${infoContact}">
-        <p>Nom: <input type="text" field="*{lastName}" th:placeholder="#{contact.lastName}" /></p>
-        <p>Prénom: <input type="text" field="*{firstName}" th:placeholder="#{contact.firstName}" /></p>
+    <form action="#" th:action="@{'/viewcontact/'+${contact.id}}" th:object="${contact}" method="post">
+        <input type="hidden" th:field="*{id}" th:value="*{id}"/>
+        <p>Nom: <input type="text" th:field="*{lastName}" th:value="*{lastName}" /></p>
+        <p>Prénom: <input type="text" th:field="*{firstName}" th:value="*{firstName}" /></p>
         <h3>Adresse Postale:</h3>
         <ul id="listPostal" name="0">
 
             <button type="button" id="buttonAddPostal" th:onclick="|addPostalCase()|">Ajouter une adresse</button>
         </ul>
-        <p><input type="reset" value="Submit" /> <input type="reset" value="Reset" /></p>
+        <p><input type="submit" value="Save" /> <input type="reset" value="Reset" /></p>
     </form>
 </body>
 <script type="text/javascript">

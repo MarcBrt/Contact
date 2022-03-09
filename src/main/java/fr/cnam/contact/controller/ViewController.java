@@ -5,10 +5,7 @@ import fr.cnam.contact.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,9 +34,17 @@ public class ViewController {
     }
 
     @GetMapping("/viewcontact/{id}")
-    public String viewContact(@PathVariable String id, Model model, ContactRepository repository) {
-        Contact c1 = new Contact(); c1.setId(0L); c1.setLastName("Brt"); c1.setFirstName("Mrc");
+    public String viewContact(@PathVariable long id, Model model) {
+        Contact c1 = repository.findById(id).orElse(new Contact());
         model.addAttribute("contact", c1);
+        return "viewContact";
+    }
+
+    @PostMapping("/viewcontact/{id}")
+    public String greetingSubmit(@PathVariable long id, @ModelAttribute Contact contact, Model model) {
+        model.addAttribute("contact", contact);
+        System.out.println(contact.toString());
+        repository.save(contact);
         return "viewContact";
     }
 
