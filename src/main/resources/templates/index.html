@@ -5,7 +5,7 @@
 
     <!-- You should properly set the path from the main file. -->
 
-    <title>Getting Started: Handling Form Submission</title>
+    <title>Home</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -15,11 +15,15 @@
     <ul th:each=" e : ${contacts}">
         <li>
             <p th:text="'N°'+${e.id}+' '+${e.lastName}+' '+${e.firstName}" />
+            <dl th:each="email : ${e.mailList}">
+                <dt> <a th:href="'/email/'+${email.id}"><p th:text="${email.adress}" /></a> </dt>
+            </dl>
             <button type="button" th:onclick="|modifyContact('${e.id}')|"><a>Modifier</a></button>
             <button type="button" th:onclick="|deleteContact('${e.id}')|"> <a >Supprimer</a> </button>
         </li>
     </ul>
     <button style="margin-left: 5px" type="button" th:onclick="|addContact()|">Ajouter un contact</button>
+    <button style="margin-left: 5px" type="button" th:onclick="|addEmail()|">Ajouter une adresse mail</button>
 </div>
 </body>
 <script type="text/javascript">
@@ -32,6 +36,9 @@
     }
     function addContact() {
         window.location.href = "/addContact"
+    }
+    function addEmail() {
+        window.location.href = "/addemail"
     }
 </script>
 </html>

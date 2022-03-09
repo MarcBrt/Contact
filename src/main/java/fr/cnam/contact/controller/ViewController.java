@@ -1,6 +1,7 @@
 package fr.cnam.contact.controller;
 
 import fr.cnam.contact.entity.Contact;
+import fr.cnam.contact.entity.Mail;
 import fr.cnam.contact.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,17 +24,11 @@ public class ViewController {
 
     @GetMapping("/")
     public String index(Model model) {
-
-        Contact c2 = new Contact(); c2.setId(1L); c2.setLastName("Brt"); c2.setFirstName("Mrc");
-        Contact c3 = new Contact(); c3.setId(2L); c3.setLastName("Brt"); c3.setFirstName("Mrc");
-        repository.save(c2);
-        repository.save(c3);
-
-        System.out.println(repository.count());
-
         model.addAttribute("contacts", repository.findAll());
         return "index";
     }
+
+    ////////////////// CONTACT /////////////////////
 
     @GetMapping("/viewcontact/{id}")
     public String viewContact(@PathVariable long id, Model model) {
@@ -71,6 +66,15 @@ public class ViewController {
         Optional<Contact> c1 = repository.findById(id);
         c1.ifPresent(contact -> repository.delete(contact));
         return "redirect:/";
+    }
+
+    //////////////////// EMAIL ////////////////////////
+
+    @GetMapping("addemail")
+    public String addEmail(Model model) {
+        model.addAttribute("contacts" , repository.findAll() );
+        model.addAttribute("mail", new Mail());
+        return "addEmail";
     }
 
 }

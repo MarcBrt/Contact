@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css">
+
+    <title>Email : Ajout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+
+<div class="row">
+    <div class="col m12 "><a href="/">Home</a></div>
+</div>
+
+<form action="#" th:action="@{'/'}" th:object="${mail}" method="post">
+    <fieldset>
+        <input type="hidden" th:field="*{id}" th:value="*{id}"/>
+        <p>Adresse: <input type="" th:field="*{adress}" th:value="*{adress}" /></p>
+        <label for="contact-select">Choisissez un contact:</label>
+
+        <select id="contact-select">
+            <option value=""> -- </option>
+            <option th:each="contact : ${contacts}" th:value="${contact.id}" th:utext="${contact.lastName}+' '+${contact.firstName}" />
+        </select>
+        <p><input type="submit" value="Save" /> <input type="reset" value="Reset" /></p>
+    </fieldset>
+</form>
+</body>
+</html>
