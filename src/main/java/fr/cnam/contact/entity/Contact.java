@@ -2,6 +2,8 @@ package fr.cnam.contact.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,12 @@ public class Contact implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+    @NotNull
+    @Size(min = 2, max = 15)
     private String lastName;
+
+    @NotNull
+    @Size(min = 2, max = 15)
     private String firstName;
 
     @OneToMany
