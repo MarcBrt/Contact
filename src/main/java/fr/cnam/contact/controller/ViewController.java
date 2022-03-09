@@ -23,14 +23,6 @@ public class ViewController {
 
     @GetMapping("/")
     public String index(Model model) {
-
-        Contact c2 = new Contact(); c2.setId(1L); c2.setLastName("Brt"); c2.setFirstName("Mrc");
-        Contact c3 = new Contact(); c3.setId(2L); c3.setLastName("Brt"); c3.setFirstName("Mrc");
-        repository.save(c2);
-        repository.save(c3);
-
-        System.out.println(repository.count());
-
         model.addAttribute("contacts", repository.findAll());
         return "index";
     }
