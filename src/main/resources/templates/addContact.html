@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css">
+
     <meta charset="UTF-8">
     <title>Add contact</title>
 </head>
 <body>
 
+<h4>Ajouter un contact:</h4>
+
 <form action="#" th:action="@{addContact}" th:object="${contact}" method="post">
-    <table>
-        <tr>
-            <td>FirstName:</td>
-            <td><input type="text" th:field="*{firstName}"/></td>
-            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</td>
-        </tr>
-        <tr>
-            <td>LastName:</td>
-            <td><input type="text" th:field="*{lastName}"/></td>
-            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</td>
-        </tr>
-        <tr>
-            <td>
-                <button type="submit">Submit</button>
-            </td>
-        </tr>
-    </table>
+    <fieldset>
+        <table>
+            <tr>
+                <td>FirstName:</td>
+                <td><input type="text" th:field="*{firstName}"/></td>
+                <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</td>
+            </tr>
+            <tr>
+                <td>LastName:</td>
+                <td><input type="text" th:field="*{lastName}"/></td>
+                <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="_success" type="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
 </form>
 
 </body>
