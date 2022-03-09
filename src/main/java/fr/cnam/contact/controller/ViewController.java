@@ -38,7 +38,8 @@ public class ViewController {
 
     @GetMapping("/viewcontact/{id}")
     public String viewContact(@PathVariable String id, Model model, ContactRepository repository) {
-        model.addAttribute("contact", repository.findById( Integer.parseInt(id) ));
+        Contact c1 = new Contact(); c1.setId(0L); c1.setLastName("Brt"); c1.setFirstName("Mrc");
+        model.addAttribute("contact", c1);
         return "viewContact";
     }
 

@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <h1> Bienvenue, salut à toi invocateur </h1>
+    <h1 th:text="'Contact : '+${contact.lastName} +' '+ ${contact.firstName}" />
+
+    <form action="" onsubmit="null" th:object="${infoContact}">
+        <p>Nom: <input type="text" field="*{lastName}" th:placeholder="#{contact.lastName}" /></p>
+        <p>Prénom: <input type="text" field="*{firstName}" th:placeholder="#{contact.firstName}" /></p>
+        <h3>Adresse Postale:</h3>
+        <ul id="listPostal" name="0">
+
+            <button type="button" id="buttonAddPostal" th:onclick="|addPostalCase()|">Ajouter une adresse</button>
+        </ul>
+        <p><input type="reset" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
 </body>
+<script type="text/javascript">
+            function addPostalCase() {
+                let listElement = document.getElementById("listPostal")
+                let nb = listElement.name
+
+                let input = document.createElement("input")
+                input.type = "text"
+                input.setAttribute("th:placeholder","Entrer une adresse")
+
+                let p = document.createElement("p")
+                p.text = `Adresse N° ${nb}: `
+                p.appendChild(input)
+
+                let li = document.createElement("li")
+                li.appendChild(p)
+
+                listElement.name = nb+1
+                listElement.appendChild(li)
+
+                return false
+            }
+</script>
 </html>
