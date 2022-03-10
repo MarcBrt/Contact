@@ -28,6 +28,21 @@ dependencies {
     // https://mvnrepository.com/artifact/org.hsqldb/hsqldb
     testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.0.0'
 
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.13.2'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.2'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.2'
+
+
+
+
 }
 
 test {

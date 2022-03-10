@@ -41,9 +41,9 @@ public class Mail {
         this.adress = adress;
     }
 
-    public Contact getOwner() {
-        return owner;
-    }
+//    public Contact getOwner() {
+//        return owner;
+//    }
 
     public void setOwner(Contact owner) {
         this.owner = owner;
