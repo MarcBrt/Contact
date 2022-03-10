@@ -13,15 +13,14 @@
     <div class="col m12 "><a href="/">Home</a></div>
 </div>
 
-<form action="#" th:action="@{'/'}" th:object="${mail}" method="post">
+<form th:action="@{/addemail}" th:object="${email}" method="post">
     <fieldset>
-        <input type="hidden" th:field="*{id}" th:value="*{id}"/>
-        <p>Adresse: <input type="" th:field="*{adress}" th:value="*{adress}" /></p>
-        <label for="contact-select">Choisissez un contact:</label>
+        <p>Adresse: <input type="text" th:field="*{adress}" /></p>
+        <label for="contact_select">Choisissez un contact:</label>
 
-        <select id="contact-select">
+        <select id="contact_select" th:object="${contact}" >
             <option value=""> -- </option>
-            <option th:each="contact : ${contacts}" th:value="${contact.id}" th:utext="${contact.lastName}+' '+${contact.firstName}" />
+            <option th:each="c : ${contacts}" th:value="${c}" th:utext="${c.lastName}+' '+${c.firstName}"></option>
         </select>
         <p><input type="submit" value="Save" /> <input type="reset" value="Reset" /></p>
     </fieldset>

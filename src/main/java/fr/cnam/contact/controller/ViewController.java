@@ -5,15 +5,11 @@ import fr.cnam.contact.entity.Mail;
 import fr.cnam.contact.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -73,8 +69,28 @@ public class ViewController {
     @GetMapping("addemail")
     public String addEmail(Model model) {
         model.addAttribute("contacts" , repository.findAll() );
-        model.addAttribute("mail", new Mail());
+
+        Mail email = new Mail();
+
+        model.addAttribute("email", email );
+        model.addAttribute("contact", email.getOwner() );
+
         return "addEmail";
+    }
+
+    @PostMapping("/addemail")
+    public String addEmail(@ModelAttribute Mail email, @ModelAttribute Contact contact ) {
+        try {
+            System.out.println("TTTTTTTTTTTTTTTTT " +email);
+
+            contact.addMail(email);
+            System.out.println("TTTTTTTTTTTTTTTTT " +email);
+            repository.save(contact);
+
+        } catch (Exception e) {
+            System.out.println( e.getMessage() );
+        }
+        return "redirect:/";
     }
 
 }

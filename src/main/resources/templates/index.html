@@ -14,9 +14,9 @@
 
     <ul th:each=" e : ${contacts}">
         <li>
-            <p th:text="'N°'+${e.id}+' '+${e.lastName}+' '+${e.firstName}" />
+            <p th:text="'N°'+${e.id}+' '+${e.lastName}+' '+${e.firstName}"></p>
             <dl th:each="email : ${e.mailList}">
-                <dt> <a th:href="'/email/'+${email.id}"><p th:text="${email.adress}" /></a> </dt>
+                <dt> <a th:href="'/email/'+${email.id}"><p th:text="${email.adress}"></p></a> </dt>
             </dl>
             <button type="button" th:onclick="|modifyContact('${e.id}')|"><a>Modifier</a></button>
             <button type="button" th:onclick="|deleteContact('${e.id}')|"> <a >Supprimer</a> </button>

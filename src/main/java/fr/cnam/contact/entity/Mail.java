@@ -1,22 +1,22 @@
 package fr.cnam.contact.entity;
 
+import fr.cnam.contact.repository.ContactRepository;
+
 import javax.persistence.*;
 
 @Entity
 public class Mail {
+
+
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String adress;
 
     @ManyToOne
     private Contact owner;
-
-    public Mail(Long id, String adress, Contact owner) {
-        this.id = id;
-        this.adress = adress;
-        this.owner = owner;
-    }
 
     public Mail(String adress, Contact owner) {
         this.adress = adress;
@@ -47,5 +47,14 @@ public class Mail {
 
     public void setOwner(Contact owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return "Mail{" +
+                "id=" + id +
+                ", adress='" + adress + '\'' +
+                ", owner=" + owner +
+                '}';
     }
 }
