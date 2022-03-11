@@ -27,7 +27,7 @@ public class Contact implements Serializable {
     @OneToMany(mappedBy="owner", cascade = CascadeType.ALL)
     private List<Mail> mailList = new ArrayList<Mail>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.DETACH, fetch=FetchType.LAZY)
     @JoinTable(
             name = "contact_postal",
             joinColumns = @JoinColumn(name = "contact_id"),

@@ -20,7 +20,7 @@ public class Adress {
     private String additionalInformation;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "adressList", cascade = CascadeType.REMOVE, fetch=FetchType.LAZY)
+    @ManyToMany(mappedBy = "adressList", cascade = CascadeType.DETACH, fetch=FetchType.LAZY)
     private List<Contact> contactList = new ArrayList<Contact>();
 
     public Long getId() {

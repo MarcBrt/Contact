@@ -167,10 +167,24 @@ public class ViewController {
         return "addPostal";
     }
 
-    @GetMapping("/postal/{id}/delete")
-    public String getDelPostal(@PathVariable long id) {
-        Optional<Adress> c1 = repositoryAdress.findById(id);
-        c1.ifPresent(entity -> repositoryAdress.delete(entity));
+    @GetMapping("/postal/{id}/{idContact}/delete")
+    public String getDelPostal(@PathVariable long id, @PathVariable long idContact) {
+        try {
+            Optional<Adress> c1 = repositoryAdress.findById(id);
+            c1.ifPresent(entity -> {
+                Optional<Contact> tempContact = repositoryContact.findById(idContact);
+                tempContact.ifPresent(contact -> {
+                    try {
+                        contact.removeAdress(entity);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                repositoryAdress.delete(entity);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/";
     }
 
