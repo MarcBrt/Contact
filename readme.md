@@ -7,7 +7,7 @@ Api:
 
 For add a contact:
 
-Send a post method with params "action = addContact" and body with xml.
+Send a post method with params ``action = addContact`` and body with xml.
 Example:
 localhost:8080/xml?action=addContact
 
@@ -20,7 +20,7 @@ localhost:8080/xml?action=addContact
 
 For edit a contact:
 
-Send a post method with params "action = editContact", "id = <id of contact>" and body with xml.
+Send a post method with params ``action = editContact``, ``id = <id of contact>`` and body with xml.
 Example:
 localhost:8080/xml?action=editContact&id=225
 
