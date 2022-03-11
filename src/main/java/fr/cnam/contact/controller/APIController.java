@@ -12,12 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.util.Optional;
-
 @RestController
 public class APIController {
 
@@ -65,8 +59,10 @@ public class APIController {
                     try {
                         XmlMapper xmlMapper = new XmlMapper();
                         value = xmlMapper.readValue(xml, Contact.class);
-                        value.setId(id);
-                        repository.save(value);
+                        Contact oldContact = repository.getOne(id);
+                        oldContact.setFirstName(value.getFirstName());
+                        oldContact.setLastName(value.getFirstName());
+                        repository.flush();
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
