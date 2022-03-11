@@ -3,17 +3,26 @@ package fr.cnam.contact.controller;
 import fr.cnam.contact.entity.Adress;
 import fr.cnam.contact.entity.Contact;
 import fr.cnam.contact.entity.Mail;
+import fr.cnam.contact.entity.User;
 import fr.cnam.contact.repository.AdressRepository;
 import fr.cnam.contact.repository.ContactRepository;
+import fr.cnam.contact.service.SecurityUserDetailsService;
 import fr.cnam.contact.repository.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
@@ -186,6 +195,44 @@ public class ViewController {
             e.printStackTrace();
         }
         return "redirect:/";
+    }
+
+
+    @Autowired private SecurityUserDetailsService userDetailsManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @GetMapping("/login")
+    public String login(HttpServletRequest request, HttpSession session) {
+        session.setAttribute("error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+        return "login";
+    }
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public String addUser(@RequestParam Map<String, String> body) {
+        User user = new User();
+        user.setUsername(body.get("username"));
+        user.setPassword(passwordEncoder.encode(body.get("password")));
+        user.setAccountNonLocked(true);
+        userDetailsManager.createUser(user);
+
+        return "redirect:/login";
+    }
+    private String getErrorMessage(HttpServletRequest request, String key) {
+        Exception exception = (Exception) request.getSession().getAttribute(key);
+        String error = "";
+        if (exception instanceof BadCredentialsException) {
+            error = "Invalid username and password!";
+        } else if (exception instanceof LockedException) {
+            error = exception.getMessage();
+        } else {
+            error = "Invalid username and password!";
+        }
+        return error;
     }
 
 }

@@ -117,4 +117,12 @@ public class Contact implements Serializable {
         }
         throw new Exception("Adress does not exist");
     }
+
+    public void setMailList(List<Mail> mailList) {
+        this.mailList = mailList;
+    }
+
+    public void setAdressList(List<Adress> adressList) {
+        this.adressList = adressList;
+    }
 }
