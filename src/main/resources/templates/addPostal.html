@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css">
+
+    <title>Postale : Ajout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<div align="center">
+    <form method="get" >
+        <table border="0">
+            <tr>
+                <td colspan="2" align="center"><h2>Ajouter une adresse postal</h2></td>
+            </tr>
+            <tr>
+                <td>  <h6 style="color: #FF0000"> Si vous n'êtes pas redirigé cela signifie que votre adresse email est déjà existante. </h6></td>
+            </tr>
+            <tr>
+                <td>Adresse:</td>
+                <td><input id="adress" type="text" /></td>
+            </tr>
+
+            <tr>
+                <td>Contact:</td>
+                <td><select id="contact_select">
+                    <option selected > -- </option>
+                    <option th:each="c : ${contacts}" th:value="${c.id}" th:utext="${c.lastName}+' '+${c.firstName}"></option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="Register" th:onclick="|submitPost()|" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    function submitPost() {
+        let select = document.getElementById("contact_select")
+        let val = select.value
+
+        let adressElement = document.getElementById("adress")
+        let adressValue = adressElement.value
+
+        window.location.href = `/postal/${val}/${adressValue}`
+    }
+</script>
+</html>

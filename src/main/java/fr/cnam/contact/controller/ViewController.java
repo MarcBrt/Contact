@@ -1,7 +1,9 @@
 package fr.cnam.contact.controller;
 
+import fr.cnam.contact.entity.Adress;
 import fr.cnam.contact.entity.Contact;
 import fr.cnam.contact.entity.Mail;
+import fr.cnam.contact.repository.AdressRepository;
 import fr.cnam.contact.repository.ContactRepository;
 import fr.cnam.contact.repository.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,12 @@ public class ViewController {
     @Autowired
     private MailRepository repositoryMail;
 
+    @Autowired
+    private AdressRepository repositoryAdress;
+
     @GetMapping("/")
     public String index(Model model) {
         List<Contact> liste = repositoryContact.findAll();
-
-        System.out.println(liste);
 
         model.addAttribute("contacts", liste);
         return "index";
@@ -79,7 +82,6 @@ public class ViewController {
     @GetMapping("/addemail")
     public String addEmail(Model model) {
         model.addAttribute("contacts", repositoryContact.findAll());
-
         return "addEmail";
     }
 
@@ -99,10 +101,7 @@ public class ViewController {
 
                 repositoryMail.save(mail);
 
-                //contact.addMail(mail);
-
-                System.out.println(contact);
-
+                repositoryMail.flush();
                 repositoryContact.flush();
 
                 return "redirect:/";
@@ -122,6 +121,57 @@ public class ViewController {
         return "redirect:/";
     }
 
+    ////////////////// POSTALE ////////////////////
 
+    @GetMapping("/postal")
+    public String addPostal(Model model) {
+        model.addAttribute("contacts", repositoryContact.findAll());
+
+        return "addPostal";
+    }
+
+    @RequestMapping("/postal/{id}/{adressDesc}")
+    public String getAddPostal(@PathVariable String id, @PathVariable String adressDesc) throws Exception {
+        long idContact = Long.parseLong(id);
+
+        try {
+
+            Optional<Contact> c = repositoryContact.findById(idContact);
+            if( c.isPresent() ) {
+                Contact contact = c.get();
+
+                Adress adress = new Adress();
+                adress.setAdress(adressDesc);
+                adress.addContact(contact);
+
+                repositoryAdress.save(adress);
+
+                Optional<Adress> tempAdress = repositoryAdress.findById(adress.getId());
+                if( tempAdress.isPresent() ) {
+                    Adress tmp = tempAdress.get();
+
+                    contact.addAdress(tmp);
+                }
+
+                repositoryAdress.flush();
+                repositoryContact.flush();
+
+
+                return "redirect:/";
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return "addPostal";
+    }
+
+    @GetMapping("/postal/{id}/delete")
+    public String getDelPostal(@PathVariable long id) {
+        Optional<Adress> c1 = repositoryAdress.findById(id);
+        c1.ifPresent(entity -> repositoryAdress.delete(entity));
+        return "redirect:/";
+    }
 
 }

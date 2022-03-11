@@ -27,7 +27,11 @@ public class Contact implements Serializable {
     @OneToMany(mappedBy="owner", cascade = CascadeType.ALL)
     private List<Mail> mailList = new ArrayList<Mail>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @JoinTable(
+            name = "contact_postal",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "postal_id"))
     private List<Adress> adressList = new ArrayList<Adress>();
 
     public Contact() {
@@ -47,7 +51,6 @@ public class Contact implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", mailList=" + mailList +
-                ", adressList=" + adressList +
                 '}';
     }
 
