@@ -24,16 +24,21 @@ public class Contact implements Serializable {
     @Size(min = 2, max = 15)
     private String firstName;
 
-    @OneToMany
+    @OneToMany(mappedBy="owner", cascade = CascadeType.ALL)
     private List<Mail> mailList = new ArrayList<Mail>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @JoinTable(
+            name = "contact_postal",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "postal_id"))
     private List<Adress> adressList = new ArrayList<Adress>();
 
     public Contact() {
     }
 
     public Contact( Long id, String firstName, String lastName) {
+        super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,7 +51,6 @@ public class Contact implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", mailList=" + mailList +
-                ", adressList=" + adressList +
                 '}';
     }
 

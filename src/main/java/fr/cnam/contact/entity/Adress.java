@@ -20,7 +20,7 @@ public class Adress {
     private String additionalInformation;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(mappedBy = "adressList", cascade = CascadeType.REMOVE, fetch=FetchType.LAZY)
     private List<Contact> contactList = new ArrayList<Contact>();
 
     public Long getId() {
@@ -70,6 +70,24 @@ public class Adress {
     public void setAdditionalInformation(String additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
+
+    public Adress addContact(Contact contact) throws Exception {
+        if (!this.contactList.contains(contact)) {
+            this.contactList.add(contact);
+            return this;
+        }
+        throw new Exception("Adress already exist");
+    }
+
+    public Adress removeContact(Contact contact) throws Exception {
+        if (this.contactList.contains(contact)) {
+            this.contactList.remove(contact);
+            return this;
+        }
+        throw new Exception("Adress does not exist");
+    }
+
+
 
     public List<Contact> getContactList() {
         return contactList;

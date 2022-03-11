@@ -1,10 +1,13 @@
 package fr.cnam.contact.controller;
 
+import fr.cnam.contact.entity.Adress;
 import fr.cnam.contact.entity.Contact;
 import fr.cnam.contact.entity.Mail;
 import fr.cnam.contact.entity.User;
+import fr.cnam.contact.repository.AdressRepository;
 import fr.cnam.contact.repository.ContactRepository;
 import fr.cnam.contact.service.SecurityUserDetailsService;
+import fr.cnam.contact.repository.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,22 +17,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ViewController {
 
     @Autowired
-    private ContactRepository repository;
+    private ContactRepository repositoryContact;
+
+    @Autowired
+    private MailRepository repositoryMail;
+
+    @Autowired
+    private AdressRepository repositoryAdress;
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("contacts", repository.findAll());
+        List<Contact> liste = repositoryContact.findAll();
+
+        model.addAttribute("contacts", liste);
         return "index";
     }
 
@@ -37,7 +50,7 @@ public class ViewController {
 
     @GetMapping("/viewcontact/{id}")
     public String viewContact(@PathVariable long id, Model model) {
-        Contact c1 = repository.findById(id).orElse(new Contact());
+        Contact c1 = repositoryContact.findById(id).orElse(new Contact());
         model.addAttribute("contact", c1);
         return "viewContact";
     }
@@ -46,7 +59,7 @@ public class ViewController {
     public String contactSave(@PathVariable long id, @ModelAttribute Contact contact, Model model) {
         model.addAttribute("contact", contact);
         System.out.println(contact.toString());
-        repository.save(contact);
+        repositoryContact.save(contact);
         return "viewContact";
     }
 
@@ -62,43 +75,111 @@ public class ViewController {
             return "addContact";
         }
 
-        repository.save(contact);
+        repositoryContact.save(contact);
         return "redirect:/";
     }
 
     @GetMapping("/viewcontact/{id}/delete")
     public String getDelContact(@PathVariable long id, Model model) {
-        Optional<Contact> c1 = repository.findById(id);
-        c1.ifPresent(contact -> repository.delete(contact));
+        Optional<Contact> c1 = repositoryContact.findById(id);
+        c1.ifPresent(contact -> repositoryContact.delete(contact));
         return "redirect:/";
     }
 
     //////////////////// EMAIL ////////////////////////
 
-    @GetMapping("addemail")
+    @GetMapping("/addemail")
     public String addEmail(Model model) {
-        model.addAttribute("contacts" , repository.findAll() );
+        model.addAttribute("contacts", repositoryContact.findAll());
+        return "addEmail";
+    }
 
-        Mail email = new Mail();
+    @RequestMapping("/addemail/{id}/{adress}")
+    public String getAddMail(@PathVariable String id, @PathVariable String adress) throws Exception {
+        long idContact = Long.parseLong(id);
 
-        model.addAttribute("email", email );
-        model.addAttribute("contact", email.getOwner() );
+        try {
+
+            Optional<Contact> c = repositoryContact.findById(idContact);
+            if( c.isPresent() ) {
+                Contact contact = c.get();
+
+                Mail mail = new Mail();
+                mail.setAdress(adress);
+                mail.setOwner(contact);
+
+                repositoryMail.save(mail);
+
+                repositoryMail.flush();
+                repositoryContact.flush();
+
+                return "redirect:/";
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         return "addEmail";
     }
 
-    @PostMapping("/addemail")
-    public String addEmail(@ModelAttribute Mail email, @ModelAttribute Contact contact ) {
-        try {
-            System.out.println("TTTTTTTTTTTTTTTTT " +email);
+    @GetMapping("/email/{id}/delete")
+    public String getDelContact(@PathVariable long id) {
+        Optional<Mail> c1 = repositoryMail.findById(id);
+        c1.ifPresent(entity -> repositoryMail.delete(entity));
+        return "redirect:/";
+    }
 
-            contact.addMail(email);
-            System.out.println("TTTTTTTTTTTTTTTTT " +email);
-            repository.save(contact);
+    ////////////////// POSTALE ////////////////////
+
+    @GetMapping("/postal")
+    public String addPostal(Model model) {
+        model.addAttribute("contacts", repositoryContact.findAll());
+
+        return "addPostal";
+    }
+
+    @RequestMapping("/postal/{id}/{adressDesc}")
+    public String getAddPostal(@PathVariable String id, @PathVariable String adressDesc) throws Exception {
+        long idContact = Long.parseLong(id);
+
+        try {
+
+            Optional<Contact> c = repositoryContact.findById(idContact);
+            if( c.isPresent() ) {
+                Contact contact = c.get();
+
+                Adress adress = new Adress();
+                adress.setAdress(adressDesc);
+                adress.addContact(contact);
+
+                repositoryAdress.save(adress);
+
+                Optional<Adress> tempAdress = repositoryAdress.findById(adress.getId());
+                if( tempAdress.isPresent() ) {
+                    Adress tmp = tempAdress.get();
+
+                    contact.addAdress(tmp);
+                }
+
+                repositoryAdress.flush();
+                repositoryContact.flush();
+
+
+                return "redirect:/";
+            }
 
         } catch (Exception e) {
-            System.out.println( e.getMessage() );
+            System.out.println(e.getMessage());
         }
+
+        return "addPostal";
+    }
+
+    @GetMapping("/postal/{id}/delete")
+    public String getDelPostal(@PathVariable long id) {
+        Optional<Adress> c1 = repositoryAdress.findById(id);
+        c1.ifPresent(entity -> repositoryAdress.delete(entity));
         return "redirect:/";
     }
 

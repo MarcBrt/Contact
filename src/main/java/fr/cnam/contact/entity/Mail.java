@@ -3,22 +3,23 @@ package fr.cnam.contact.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.cnam.contact.repository.ContactRepository;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
-public class Mail {
-
-
+public class Mail implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String adress;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     private Contact owner;
 
     public Mail(String adress, Contact owner) {
@@ -26,7 +27,8 @@ public class Mail {
         this.owner = owner;
     }
 
-    public Mail() {}
+    public Mail() {
+    }
 
     public Long getId() {
         return id;
@@ -56,8 +58,7 @@ public class Mail {
     public String toString() {
         return "Mail{" +
                 "id=" + id +
-                ", adress='" + adress + '\'' +
-                ", owner=" + owner +
+                ", adress='" + adress +
                 '}';
     }
 }

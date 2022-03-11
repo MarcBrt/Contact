@@ -20,15 +20,27 @@
     <ul th:each=" e : ${contacts}">
         <li>
             <p th:text="'N°'+${e.id}+' '+${e.lastName}+' '+${e.firstName}"></p>
-            <dl th:each="email : ${e.mailList}">
-                <dt> <a th:href="'/email/'+${email.id}"><p th:text="${email.adress}"></p></a> </dt>
-            </dl>
+            <label for="label_mail">Adresse mail:</label>
+            <ul id="label_mail">
+                <li th:each="email : ${e.mailList}">
+                    <a th:text="${email.adress}"></a>
+                    <button type="button" th:onclick="|deleteMail('${email.id}')|"> Delete </button>
+                </li>
+            </ul>
+            <label for="label_postal">Adresse Postal:</label>
+            <ul id="label_postal">
+                <li th:each="post : ${e.adressList}">
+                    <a th:text="${post.adress}"></a>
+                    <button type="button" th:onclick="|deletePostal('${post.id}')|"> Delete </button>
+                </li>
+            </ul>
             <button type="button" th:onclick="|modifyContact('${e.id}')|"><a>Modifier</a></button>
             <button type="button" th:onclick="|deleteContact('${e.id}')|"> <a >Supprimer</a> </button>
         </li>
     </ul>
     <button style="margin-left: 5px" type="button" th:onclick="|addContact()|">Ajouter un contact</button>
     <button style="margin-left: 5px" type="button" th:onclick="|addEmail()|">Ajouter une adresse mail</button>
+    <button style="margin-left: 5px" type="button" th:onclick="|addPostal()|">Ajouter une adresse postale</button>
 </div>
 </body>
 <script type="text/javascript">
@@ -42,8 +54,22 @@
     function addContact() {
         window.location.href = "/addContact"
     }
+    ///////////////////////////////
     function addEmail() {
         window.location.href = "/addemail"
+    }
+    function deleteMail(id) {
+        window.location.href = `/email/${id}/delete`
+    }
+/////////////////////////////////////
+    function addPostal() {
+        window.location.href = "/postal"
+    }
+    function modifyPostal(id) {
+        window.location.href = `/postal/${id}`
+    }
+    function deletePostal(id) {
+        window.location.href = `/postal/${id}/delete`
     }
 </script>
 </html>
