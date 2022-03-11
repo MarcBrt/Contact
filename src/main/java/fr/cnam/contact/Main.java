@@ -1,6 +1,6 @@
 package fr.cnam.contact;
 
-import fr.cnam.contact.save.ApplicationConfig;
+import fr.cnam.contact.config.ApplicationConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
