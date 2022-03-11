@@ -15,9 +15,13 @@
     <ul th:each=" e : ${contacts}">
         <li>
             <p th:text="'N°'+${e.id}+' '+${e.lastName}+' '+${e.firstName}"></p>
-            <dl th:each="email : ${e.mailList}">
-                <dt> <a th:href="'/email/'+${email.id}"><p th:text="${email.adress}"></p></a> </dt>
-            </dl>
+            <label for="label_mail">Adresse mail:</label>
+            <ul id="label_mail">
+                <li th:each="email : ${e.mailList}">
+                    <a th:text="${email.adress}"></a>
+                    <button type="button" th:onclick="|deleteMail('${email.id}')|"> Delete </button>
+                </li>
+            </ul>
             <button type="button" th:onclick="|modifyContact('${e.id}')|"><a>Modifier</a></button>
             <button type="button" th:onclick="|deleteContact('${e.id}')|"> <a >Supprimer</a> </button>
         </li>
@@ -39,6 +43,9 @@
     }
     function addEmail() {
         window.location.href = "/addemail"
+    }
+    function deleteMail(id) {
+        window.location.href = `/email/${id}/delete`
     }
 </script>
 </html>

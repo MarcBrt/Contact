@@ -3,24 +3,34 @@ package fr.cnam.contact.controller;
 import fr.cnam.contact.entity.Contact;
 import fr.cnam.contact.entity.Mail;
 import fr.cnam.contact.repository.ContactRepository;
+import fr.cnam.contact.repository.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ViewController {
 
     @Autowired
-    private ContactRepository repository;
+    private ContactRepository repositoryContact;
+
+    @Autowired
+    private MailRepository repositoryMail;
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("contacts", repository.findAll());
+        List<Contact> liste = repositoryContact.findAll();
+
+        System.out.println(liste);
+
+        model.addAttribute("contacts", liste);
         return "index";
     }
 
@@ -28,7 +38,7 @@ public class ViewController {
 
     @GetMapping("/viewcontact/{id}")
     public String viewContact(@PathVariable long id, Model model) {
-        Contact c1 = repository.findById(id).orElse(new Contact());
+        Contact c1 = repositoryContact.findById(id).orElse(new Contact());
         model.addAttribute("contact", c1);
         return "viewContact";
     }
@@ -37,7 +47,7 @@ public class ViewController {
     public String contactSave(@PathVariable long id, @ModelAttribute Contact contact, Model model) {
         model.addAttribute("contact", contact);
         System.out.println(contact.toString());
-        repository.save(contact);
+        repositoryContact.save(contact);
         return "viewContact";
     }
 
@@ -53,44 +63,65 @@ public class ViewController {
             return "addContact";
         }
 
-        repository.save(contact);
+        repositoryContact.save(contact);
         return "redirect:/";
     }
 
     @GetMapping("/viewcontact/{id}/delete")
     public String getDelContact(@PathVariable long id, Model model) {
-        Optional<Contact> c1 = repository.findById(id);
-        c1.ifPresent(contact -> repository.delete(contact));
+        Optional<Contact> c1 = repositoryContact.findById(id);
+        c1.ifPresent(contact -> repositoryContact.delete(contact));
         return "redirect:/";
     }
 
     //////////////////// EMAIL ////////////////////////
 
-    @GetMapping("addemail")
+    @GetMapping("/addemail")
     public String addEmail(Model model) {
-        model.addAttribute("contacts" , repository.findAll() );
-
-        Mail email = new Mail();
-
-        model.addAttribute("email", email );
-        model.addAttribute("contact", email.getOwner() );
+        model.addAttribute("contacts", repositoryContact.findAll());
 
         return "addEmail";
     }
 
-    @PostMapping("/addemail")
-    public String addEmail(@ModelAttribute Mail email, @ModelAttribute Contact contact ) {
-        try {
-            System.out.println("TTTTTTTTTTTTTTTTT " +email);
+    @RequestMapping("/addemail/{id}/{adress}")
+    public String getAddMail(@PathVariable String id, @PathVariable String adress) throws Exception {
+        long idContact = Long.parseLong(id);
 
-            contact.addMail(email);
-            System.out.println("TTTTTTTTTTTTTTTTT " +email);
-            repository.save(contact);
+        try {
+
+            Optional<Contact> c = repositoryContact.findById(idContact);
+            if( c.isPresent() ) {
+                Contact contact = c.get();
+
+                Mail mail = new Mail();
+                mail.setAdress(adress);
+                mail.setOwner(contact);
+
+                repositoryMail.save(mail);
+
+                //contact.addMail(mail);
+
+                System.out.println(contact);
+
+                repositoryContact.flush();
+
+                return "redirect:/";
+            }
 
         } catch (Exception e) {
-            System.out.println( e.getMessage() );
+            System.out.println(e.getMessage());
         }
+
+        return "addEmail";
+    }
+
+    @GetMapping("/email/{id}/delete")
+    public String getDelContact(@PathVariable long id) {
+        Optional<Mail> c1 = repositoryMail.findById(id);
+        c1.ifPresent(entity -> repositoryMail.delete(entity));
         return "redirect:/";
     }
+
+
 
 }

@@ -8,22 +8,46 @@
 
 </head>
 <body>
+<div align="center">
+    <form method="get" >
+        <table border="0">
+            <tr>
+                <td colspan="2" align="center"><h2>Ajouter une adresse mail</h2></td>
+            </tr>
+            <tr>
+                <td>  <h6 style="color: #FF0000"> Si vous n'êtes pas redirigé cela signifie que votre adresse email est déjà existante. </h6></td>
+            </tr>
+            <tr>
+                <td>Adresse:</td>
+                <td><input id="adress" type="text" /></td>
+            </tr>
 
-<div class="row">
-    <div class="col m12 "><a href="/">Home</a></div>
+            <tr>
+                <td>Contact:</td>
+                <td><select id="contact_select">
+                        <option selected > -- </option>
+                        <option th:each="c : ${contacts}" th:value="${c.id}" th:utext="${c.lastName}+' '+${c.firstName}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" value="Register" th:onclick="|submitMail()|" />
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
-
-<form th:action="@{/addemail}" th:object="${email}" method="post">
-    <fieldset>
-        <p>Adresse: <input type="text" th:field="*{adress}" /></p>
-        <label for="contact_select">Choisissez un contact:</label>
-
-        <select id="contact_select" th:object="${contact}" >
-            <option value=""> -- </option>
-            <option th:each="c : ${contacts}" th:value="${c}" th:utext="${c.lastName}+' '+${c.firstName}"></option>
-        </select>
-        <p><input type="submit" value="Save" /> <input type="reset" value="Reset" /></p>
-    </fieldset>
-</form>
 </body>
+<script type="text/javascript">
+    function submitMail() {
+        let select = document.getElementById("contact_select")
+        let val = select.value
+
+        let adressElement = document.getElementById("adress")
+        let adressValue = adressElement.value
+
+        window.location.href = `/addemail/${val}/${adressValue}`
+    }
+</script>
 </html>

@@ -24,7 +24,7 @@ public class Contact implements Serializable {
     @Size(min = 2, max = 15)
     private String firstName;
 
-    @OneToMany
+    @OneToMany(mappedBy="owner", cascade = CascadeType.ALL)
     private List<Mail> mailList = new ArrayList<Mail>();
 
     @ManyToMany
@@ -34,6 +34,7 @@ public class Contact implements Serializable {
     }
 
     public Contact( Long id, String firstName, String lastName) {
+        super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
