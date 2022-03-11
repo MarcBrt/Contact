@@ -1,7 +1,7 @@
 Login/Register:
 
-To register go to localhost:8080/register.
-To login, just go to localhost.
+To register go to http://localhost:8080/register.
+To login, just go to http://localhost:8080/.
 
 Api:
 
