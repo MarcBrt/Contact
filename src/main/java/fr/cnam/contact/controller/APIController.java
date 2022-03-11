@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class APIController {
@@ -21,17 +22,22 @@ public class APIController {
     private ContactRepository repository;
 
     @GetMapping(value = "/xml", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<List<Contact>> index(@RequestParam(required = false) String action, @RequestParam(defaultValue = "0") long id, Model model) {
+    public ResponseEntity<Object> index(@RequestParam(required = false) String action, @RequestParam(defaultValue = "0") long id, Model model) {
 
         if (action != null) {
+            Optional<Contact> contact;
             switch (action) {
                 case "listContacts":
-                   // model.addAttribute("xml", xStream.toXML(repository.findAll()));
                     return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
                 case "getContact":
-                    break;
+                    contact = repository.findById(id);
+                    return contact.<ResponseEntity<Object>>map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
                 case "delContact":
-                    break;
+                    contact = repository.findById(id);
+                    return contact.<ResponseEntity<Object>>map(value -> {
+                        repository.deleteById(id);
+                        return new ResponseEntity<>(HttpStatus.OK);
+                    }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
             }
         }
 
