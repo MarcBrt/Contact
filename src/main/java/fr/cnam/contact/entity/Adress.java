@@ -1,5 +1,7 @@
 package fr.cnam.contact.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ public class Adress {
     private String adress;
     private String additionalInformation;
 
+    @JsonIgnore
     @ManyToMany
     private List<Contact> contactList = new ArrayList<Contact>();
 

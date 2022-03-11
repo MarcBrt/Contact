@@ -1,5 +1,7 @@
 package fr.cnam.contact.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;

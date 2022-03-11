@@ -1,5 +1,7 @@
 package fr.cnam.contact.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.cnam.contact.repository.ContactRepository;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ public class Mail {
 
     private String adress;
 
+    @JsonIgnore
     @ManyToOne
     private Contact owner;
 
@@ -41,9 +44,9 @@ public class Mail {
         this.adress = adress;
     }
 
-//    public Contact getOwner() {
-//        return owner;
-//    }
+    public Contact getOwner() {
+        return owner;
+    }
 
     public void setOwner(Contact owner) {
         this.owner = owner;

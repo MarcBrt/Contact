@@ -73,7 +73,7 @@ public class ViewController {
         Mail email = new Mail();
 
         model.addAttribute("email", email );
-//        model.addAttribute("contact", email.getOwner() );
+        model.addAttribute("contact", email.getOwner() );
 
         return "addEmail";
     }
