@@ -67,7 +67,7 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/register", "/xml")
+                .authorizeRequests().antMatchers("/register", "/xml", "/xml/")
                 .permitAll().anyRequest().authenticated()
                 .and()
                 .formLogin() .loginPage("/login")
