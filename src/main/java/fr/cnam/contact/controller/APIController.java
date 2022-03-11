@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class APIController {
 
@@ -61,7 +63,9 @@ public class APIController {
                         value = xmlMapper.readValue(xml, Contact.class);
                         Contact oldContact = repository.getOne(id);
                         oldContact.setFirstName(value.getFirstName());
-                        oldContact.setLastName(value.getFirstName());
+                        oldContact.setLastName(value.getLastName());
+                        oldContact.setMailList(value.getMailList());
+                        oldContact.setAdressList(value.getAdressList());
                         repository.flush();
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
